@@ -1,41 +1,44 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>Welcome to My Website</h1>
-    <h2><? echo "Hello, World!"; ?></h2>
+<?php 
+    $host = 'db';
+    $db = 'mydatabase';
+    $user = 'user';
+    $password = 'password';
+    $charset = 'utf8mb4';
+
+    // pdo opties
+    $options = [
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+        PDO::ATTR_EMULATE_PREPARES => false,
+    ];
+
+    // dsn 
+    $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
     
-
-    <?php
-    echo "This is a PHP script embedded in HTML.";
-    ?>
-
-
-
-
-
-
-
-
-
+    try { 
+        // create the connection
+        $pdo = new PDO($dsn, $user, $password, $options);
+        // succes melding
+        echo "Database connectie gelukt <br/>";
+    } catch (PDOException $e) {
+        // foutmelding
+        echo $e->getMessage();
+        // stop (die)
+        die("Sorry, database probleem");
+    }
 
 
+    // define sql statement
+    $sql = "SELECT * FROM studenten";
 
+    // prepare the statement
+    $statement = $pdo->prepare($sql);
 
+    // exectute sql statement 
+    $statement->execute();
 
-$epstein = "Jeffrey Epstein";
-echo "The name of the person is: " . $epstein; 
+    $studenten = $statement->fetchAll();
 
-
-
-
-
-
-
-
-</body>
-</html>
+    // echo "<pre>";
+    // print_r($studenten); 
+    // echo "</pre>";
