@@ -11,14 +11,14 @@
     <!-- HEADER -->
     <header class="header vast" id="header">
         <div class="header-inner">
-            <a href="index.php" class="logo">Sperrie<span>food</span></a>
+            <a href="index.html" class="logo">Sperrie<span>food</span></a>
             <nav class="nav" id="nav">
                 <ul>
-                    <li><a href="index.php" class="actief">Home</a></li>
-                    <li><a href="menu.php">Menu</a></li>
+                    <li><a href="index.html" class="actief">Home</a></li>
+                    <li><a href="menu.html">Menu</a></li>
                     <li><a href="over-ons.html">Over Ons</a></li>
                     <li><a href="contact.html">Contact</a></li>
-                    <li><a href="login.php" class="btn-beheer">Beheer</a></li>
+                    <li><a href="login.html" class="btn-beheer">Beheer</a></li>
                 </ul>
             </nav>
             <div class="hamburger" id="hamburger">
@@ -29,23 +29,62 @@
         </div>
     </header>
 
-    <!-- HERO -->
-    <section class="hero">
-        <div class="hero-overlay"></div>
-        <div class="hero-inhoud">
-            <span class="slide-label">Nijmegens Beste Cafetaria</span>
-            <h1>Versgebakken Friet & Snacks</h1>
-            <p>Dagelijks vers bereid, altijd krokant en lekker. Welkom bij Sperriefood!</p>
-            <div class="carousel-knoppen">
-                <a href="menu.php" class="btn-primair">Bekijk Menu</a>
-                <a href="over-ons.html" class="btn-secundair">Over Ons</a>
+    <!-- HERO CAROUSEL -->
+    <section class="carousel" id="carousel">
+
+        <div class="slide slide-1 actief" style="background-image: url('img/slide-1.jpg'); background-size: cover; background-position: center;">
+            <div class="slide-overlay"></div>
+            <div class="slide-inhoud">
+                <span class="slide-label">Nijmegens Beste Cafetaria</span>
+                <h1>Versgebakken Friet & Snacks</h1>
+                <p>Dagelijks vers bereid, altijd krokant en lekker. Haal bij ons de lekkerste friet van Nijmegen!</p>
+                <div class="carousel-knoppen">
+                    <a href="menu.html" class="btn-primair">Bekijk Menu</a>
+                    <a href="over-ons.html" class="btn-secundair">Over Ons</a>
+                </div>
             </div>
         </div>
+
+        <div class="slide slide-2" style="background-image: url('img/slide-2.jpg'); background-size: cover; background-position: center;">
+            <div class="slide-overlay"></div>
+            <div class="slide-inhoud">
+                <span class="slide-label">Huisgemaakte Specialiteiten</span>
+                <h1>Kroket, Frikandel & Meer</h1>
+                <p>Van klassieke snacks tot huisgemaakte burgers — altijd vers en met liefde bereid.</p>
+                <div class="carousel-knoppen">
+                    <a href="menu.html" class="btn-primair">Onze Snacks</a>
+                    <a href="contact.html" class="btn-secundair">Kom Langs</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide slide-3" style="background-image: url('img/slide-3.jpg'); background-size: cover; background-position: center;">
+            <div class="slide-overlay"></div>
+            <div class="slide-inhoud">
+                <span class="slide-label">Al 25 Jaar in Nijmegen</span>
+                <h1>Familiebedrijf Met Traditie</h1>
+                <p>Generaties lang de vertrouwde plek voor een snelle hap. Welkom bij De Hoek!</p>
+                <div class="carousel-knoppen">
+                    <a href="over-ons.html" class="btn-primair">Ons Verhaal</a>
+                    <a href="menu.html" class="btn-secundair">Menu Bekijken</a>
+                </div>
+            </div>
+        </div>
+
+        <button class="carousel-pijl pijl-links" id="pijlLinks">&#8592;</button>
+        <button class="carousel-pijl pijl-rechts" id="pijlRechts">&#8594;</button>
+
+        <div class="carousel-dots">
+            <button class="dot actief" data-index="0"></button>
+            <button class="dot" data-index="1"></button>
+            <button class="dot" data-index="2"></button>
+        </div>
+
     </section>
 
     <!-- ZOEKBALK -->
     <div class="zoek-sectie">
-        <form class="zoek-formulier" action="menu.php" method="GET">
+        <form class="zoek-formulier" action="menu.html" method="GET">
             <input type="text" name="zoek" placeholder="Zoek een gerecht... bijv. friet, kroket, burger">
             <button type="submit">Zoeken</button>
         </form>
@@ -124,12 +163,12 @@
                     <p>Alles wordt zelf gemaakt — van de sauzen tot de burgers. Vers, eerlijk en gewoon lekker.</p>
                     <div class="statistieken">
                         <div class="stat">
-                            <h3>2026</h3>
-                            <p>Opgericht</p>
+                            <h3>25+</h3>
+                            <p>Jaar ervaring</p>
                         </div>
                         <div class="stat">
-                            <h3>100%</h3>
-                            <p>Zelfgemaakt</p>
+                            <h3>500+</h3>
+                            <p>Klanten per dag</p>
                         </div>
                         <div class="stat">
                             <h3>30+</h3>
@@ -147,7 +186,7 @@
         <div class="container">
             <h2>Zin in een Lekkere Hap?</h2>
             <p>Kom langs bij Sperriefood of bekijk ons volledige menu online.</p>
-            <a href="menu.php" class="btn-wit">Bekijk het Volledige Menu</a>
+            <a href="menu.html" class="btn-wit">Bekijk het Volledige Menu</a>
         </div>
     </section>
 
@@ -156,14 +195,14 @@
         <div class="footer-top">
             <div class="footer-grid">
                 <div class="footer-brand">
-                    <a href="index.php" class="logo">Sperrie<span>food</span></a>
-                    <p>Sperriefood staat voor vers, zelfgemaakt eten in het hart van Nijmegen. Opgericht door Lano Ockers in 2026.</p>
+                    <a href="index.html" class="logo">Sperrie<span>food</span></a>
+                    <p>Sperriefood staat al 25 jaar voor verse, ambachtelijke snacks in het hart van Nijmegen.</p>
                 </div>
                 <div class="footer-kolom">
                     <h4>Navigatie</h4>
                     <ul>
-                        <li><a href="index.php">Home</a></li>
-                        <li><a href="menu.php">Menu</a></li>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="menu.html">Menu</a></li>
                         <li><a href="over-ons.html">Over Ons</a></li>
                         <li><a href="contact.html">Contact</a></li>
                     </ul>
@@ -171,10 +210,10 @@
                 <div class="footer-kolom">
                     <h4>Menu</h4>
                     <ul>
-                        <li><a href="menu.php">Friet</a></li>
-                        <li><a href="menu.php">Snacks</a></li>
-                        <li><a href="menu.php">Burgers</a></li>
-                        <li><a href="menu.php">Dranken</a></li>
+                        <li><a href="menu.html">Friet</a></li>
+                        <li><a href="menu.html">Snacks</a></li>
+                        <li><a href="menu.html">Burgers</a></li>
+                        <li><a href="menu.html">Dranken</a></li>
                     </ul>
                 </div>
                 <div class="footer-kolom">
@@ -182,14 +221,14 @@
                     <ul>
                         <li><a href="#">Hoekstraat 12, Nijmegen</a></li>
                         <li><a href="#">024-123 4567</a></li>
-                        <li><a href="#">info@sperriefood.nl</a></li>
+                        <li><a href="#">info@cafetariadhoek.nl</a></li>
                     </ul>
                 </div>
             </div>
         </div>
         <div class="footer-bottom">
             <div class="container">
-                <span>&copy; 2026 Sperriefood. Alle rechten voorbehouden.</span>
+                <span>&copy; 2025 Sperriefood. Alle rechten voorbehouden.</span>
                 <span>Gemaakt met liefde in Nijmegen</span>
             </div>
         </div>
