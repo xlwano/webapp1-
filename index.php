@@ -43,14 +43,6 @@
         </div>
     </section>
 
-    <!-- ZOEKBALK -->
-    <div class="zoek-sectie">
-        <form class="zoek-formulier" action="menu.php" method="GET">
-            <input type="text" name="zoek" placeholder="Zoek een gerecht... bijv. friet, kroket, burger">
-            <button type="submit">Zoeken</button>
-        </form>
-    </div>
-
     <!-- SPECIALITEITEN -->
     <section class="sectie sectie-licht">
         <div class="container">
