@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sperriefood - Lekker & Snel</title>
+    <title>Frietlust - Lekker & Snel</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -11,7 +11,7 @@
     <!-- HEADER -->
     <header class="header vast" id="header">
         <div class="header-inner">
-            <a href="index.php" class="logo">Sperrie<span>food</span></a>
+            <a href="index.php" class="logo">Friet<span>lust</span></a>
             <nav class="nav" id="nav">
                 <ul>
                     <li><a href="index.php" class="actief">Home</a></li>
@@ -35,7 +35,7 @@
         <div class="hero-inhoud">
             <span class="slide-label">Nijmegens Beste Cafetaria</span>
             <h1>Versgebakken Friet & Snacks</h1>
-            <p>Dagelijks vers bereid, altijd krokant en lekker. Welkom bij Sperriefood!</p>
+            <p>Dagelijks vers bereid, altijd krokant en lekker. Welkom bij Frietlust!</p>
             <div class="carousel-knoppen">
                 <a href="menu.php" class="btn-primair">Bekijk Menu</a>
                 <a href="over-ons.html" class="btn-secundair">Over Ons</a>
@@ -57,7 +57,7 @@
             <div class="sectie-kop">
                 <span class="label">Onze Favorieten</span>
                 <h2>Populaire Gerechten</h2>
-                <p>De meest bestelde gerechten van Sperriefood, dagelijks vers bereid.</p>
+                <p>De meest bestelde gerechten van Frietlust, dagelijks vers bereid.</p>
             </div>
             <div class="kaarten-grid">
                 <div class="kaart">
@@ -120,7 +120,7 @@
                 <div class="over-ons-tekst">
                     <span class="label" style="color: var(--rood); font-size: 0.8rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;">Ons Verhaal</span>
                     <h2>Lekker Zelfgemaakt Eten door Lano Ockers</h2>
-                    <p>Sperriefood is in 2026 opgericht door Lano Ockers met één doel: lekker zelfgemaakt eten serveren zonder pakjes of kant-en-klare troep.</p>
+                    <p>Frietlust is in 2026 opgericht door Lano Ockers met één doel: lekker zelfgemaakt eten serveren zonder pakjes of kant-en-klare troep.</p>
                     <p>Alles wordt zelf gemaakt — van de sauzen tot de burgers. Vers, eerlijk en gewoon lekker.</p>
                     <div class="statistieken">
                         <div class="stat">
@@ -146,7 +146,7 @@
     <section class="cta-sectie">
         <div class="container">
             <h2>Zin in een Lekkere Hap?</h2>
-            <p>Kom langs bij Sperriefood of bekijk ons volledige menu online.</p>
+            <p>Kom langs bij Frietlust of bekijk ons volledige menu online.</p>
             <a href="menu.php" class="btn-wit">Bekijk het Volledige Menu</a>
         </div>
     </section>
@@ -156,8 +156,8 @@
         <div class="footer-top">
             <div class="footer-grid">
                 <div class="footer-brand">
-                    <a href="index.php" class="logo">Sperrie<span>food</span></a>
-                    <p>Sperriefood staat voor vers, zelfgemaakt eten in het hart van Nijmegen. Opgericht door Lano Ockers in 2026.</p>
+                    <a href="index.php" class="logo">Friet<span>lust</span></a>
+                    <p>Frietlust staat voor vers, zelfgemaakt eten in het hart van Nijmegen. Opgericht door Lano Ockers in 2026.</p>
                 </div>
                 <div class="footer-kolom">
                     <h4>Navigatie</h4>
@@ -182,14 +182,14 @@
                     <ul>
                         <li><a href="#">Hoekstraat 12, Nijmegen</a></li>
                         <li><a href="#">024-123 4567</a></li>
-                        <li><a href="#">info@sperriefood.nl</a></li>
+                        <li><a href="#">info@frietlust.nl</a></li>
                     </ul>
                 </div>
             </div>
         </div>
         <div class="footer-bottom">
             <div class="container">
-                <span>&copy; 2026 Sperriefood. Alle rechten voorbehouden.</span>
+                <span>&copy; 2026 Frietlust. Alle rechten voorbehouden.</span>
                 <span>Gemaakt met liefde in Nijmegen</span>
             </div>
         </div>

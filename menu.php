@@ -1,9 +1,36 @@
+<?php
+try {
+    require 'config.php';
+
+    $zoek = isset($_GET['zoek']) ? trim($_GET['zoek']) : '';
+    $query = "SELECT * FROM gerechten";
+    if ($zoek) {
+        $query .= " WHERE naam LIKE :zoek";
+    }
+    $query .= " ORDER BY FIELD(categorie, 'Friet', 'Snacks', 'Burgers', 'Dranken'), naam";
+    $stmt = $pdo->prepare($query);
+    if ($zoek) {
+        $stmt->bindValue(':zoek', '%' . $zoek . '%');
+    }
+    $stmt->execute();
+    $gerechten = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    $categorieen = [];
+    foreach ($gerechten as $gerecht) {
+        $categorieen[$gerecht['categorie']][] = $gerecht;
+    }
+} catch (PDOException $e) {
+    $gerechten = [];
+    $categorieen = [];
+    $db_error = $e->getMessage();
+}
+?>
 <!DOCTYPE html>
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menu - Sperriefood</title>
+    <title>Menu - Frietlust</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -11,7 +38,7 @@
     <!-- HEADER -->
     <header class="header vast" id="header">
         <div class="header-inner">
-            <a href="index.php" class="logo">Sperrie<span>food</span></a>
+            <a href="index.php" class="logo">Friet<span>lust</span></a>
             <nav class="nav" id="nav">
                 <ul>
                     <li><a href="index.php">Home</a></li>
@@ -28,7 +55,7 @@
     </header>
 
     <!-- PAGINA HERO -->
-    <div class="pagina-hero" style="margin-top: var(--header-hoogte);">
+    <div class="pagina-hero">
         <div class="pagina-hero-bg"></div>
         <div class="pagina-hero-inhoud">
             <span class="label">Lekker & Vers</span>
@@ -48,175 +75,41 @@
     <!-- MENU -->
     <section class="sectie sectie-licht">
         <div class="container">
-
-            <!-- FRIET -->
-            <div class="menu-categorie">
-                <div class="categorie-titel">
-                    <h3>&#127839; Friet</h3>
-                    <div class="lijn"></div>
-                </div>
-                <div class="menu-items-grid">
-                    <div class="menu-item">
-                        <div class="menu-item-icon friet">&#127839;</div>
-                        <div class="menu-item-info">
-                            <h4>Friet Normaal</h4>
-                            <p>Krokante frietjes, klein of groot</p>
+            <?php if (isset($db_error)): ?>
+                <p>Database fout: <?php echo htmlspecialchars($db_error); ?></p>
+            <?php else: ?>
+                <?php foreach ($categorieen as $cat => $items): ?>
+                    <?php
+                    $icon = '';
+                    $class = '';
+                    switch ($cat) {
+                        case 'Friet': $icon = '&#127839;'; $class = 'friet'; break;
+                        case 'Snacks': $icon = '&#127829;'; $class = 'snack'; break;
+                        case 'Burgers': $icon = '&#127828;'; $class = 'burger'; break;
+                        case 'Dranken': $icon = '&#127867;'; $class = 'drank'; break;
+                    }
+                    ?>
+                    <div class="menu-categorie">
+                        <div class="categorie-titel">
+                            <h3><?php echo $icon; ?> <?php echo htmlspecialchars($cat); ?></h3>
+                            <div class="lijn"></div>
                         </div>
-                        <span class="menu-item-prijs">&euro; 2,50</span>
-                    </div>
-                    <div class="menu-item">
-                        <div class="menu-item-icon friet">&#127839;</div>
-                        <div class="menu-item-info">
-                            <h4>Friet Speciaal</h4>
-                            <p>Met mayo, uitjes en satésaus</p>
+                        <div class="menu-items-grid">
+                            <?php foreach ($items as $item): ?>
+                                <?php $prijs = number_format($item['prijs'], 2, ',', ''); ?>
+                                <div class="menu-item">
+                                    <div class="menu-item-icon <?php echo $class; ?>"><?php echo $icon; ?></div>
+                                    <div class="menu-item-info">
+                                        <h4><?php echo htmlspecialchars($item['naam']); ?></h4>
+                                        <p><?php echo htmlspecialchars($item['beschrijving']); ?></p>
+                                    </div>
+                                    <span class="menu-item-prijs">&euro; <?php echo $prijs; ?></span>
+                                </div>
+                            <?php endforeach; ?>
                         </div>
-                        <span class="menu-item-prijs">&euro; 3,50</span>
                     </div>
-                    <div class="menu-item">
-                        <div class="menu-item-icon friet">&#127839;</div>
-                        <div class="menu-item-info">
-                            <h4>Friet Oorlog</h4>
-                            <p>Met mayo, pindasaus en uitjes</p>
-                        </div>
-                        <span class="menu-item-prijs">&euro; 3,75</span>
-                    </div>
-                    <div class="menu-item">
-                        <div class="menu-item-icon friet">&#127839;</div>
-                        <div class="menu-item-info">
-                            <h4>Friet Saté</h4>
-                            <p>Met warme satésaus en uitjes</p>
-                        </div>
-                        <span class="menu-item-prijs">&euro; 3,25</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- SNACKS -->
-            <div class="menu-categorie">
-                <div class="categorie-titel">
-                    <h3>&#127829; Snacks</h3>
-                    <div class="lijn"></div>
-                </div>
-                <div class="menu-items-grid">
-                    <div class="menu-item">
-                        <div class="menu-item-icon snack">&#127829;</div>
-                        <div class="menu-item-info">
-                            <h4>Frikandel</h4>
-                            <p>Gebakken frikandel, met of zonder</p>
-                        </div>
-                        <span class="menu-item-prijs">&euro; 1,75</span>
-                    </div>
-                    <div class="menu-item">
-                        <div class="menu-item-icon snack">&#127829;</div>
-                        <div class="menu-item-info">
-                            <h4>Frikandel Speciaal</h4>
-                            <p>Met mayo, uitjes en curry</p>
-                        </div>
-                        <span class="menu-item-prijs">&euro; 2,75</span>
-                    </div>
-                    <div class="menu-item">
-                        <div class="menu-item-icon snack">&#127829;</div>
-                        <div class="menu-item-info">
-                            <h4>Kroket</h4>
-                            <p>Huisgemaakte rundvleskroket</p>
-                        </div>
-                        <span class="menu-item-prijs">&euro; 2,25</span>
-                    </div>
-                    <div class="menu-item">
-                        <div class="menu-item-icon snack">&#127829;</div>
-                        <div class="menu-item-info">
-                            <h4>Kaassoufflé</h4>
-                            <p>Krokant, gesmolten kaas van binnen</p>
-                        </div>
-                        <span class="menu-item-prijs">&euro; 2,00</span>
-                    </div>
-                    <div class="menu-item">
-                        <div class="menu-item-icon snack">&#127829;</div>
-                        <div class="menu-item-info">
-                            <h4>Loempia</h4>
-                            <p>Knapperige loempia met groenten</p>
-                        </div>
-                        <span class="menu-item-prijs">&euro; 2,50</span>
-                    </div>
-                    <div class="menu-item">
-                        <div class="menu-item-icon snack">&#127829;</div>
-                        <div class="menu-item-info">
-                            <h4>Bitterbal (6 stuks)</h4>
-                            <p>Huisgemaakte bitterballen</p>
-                        </div>
-                        <span class="menu-item-prijs">&euro; 4,50</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- BURGERS -->
-            <div class="menu-categorie">
-                <div class="categorie-titel">
-                    <h3>&#127828; Burgers</h3>
-                    <div class="lijn"></div>
-                </div>
-                <div class="menu-items-grid">
-                    <div class="menu-item">
-                        <div class="menu-item-icon burger">&#127828;</div>
-                        <div class="menu-item-info">
-                            <h4>Hamburger</h4>
-                            <p>Met sla, tomaat en huissaus</p>
-                        </div>
-                        <span class="menu-item-prijs">&euro; 5,50</span>
-                    </div>
-                    <div class="menu-item">
-                        <div class="menu-item-icon burger">&#127828;</div>
-                        <div class="menu-item-info">
-                            <h4>Cheeseburger</h4>
-                            <p>Met kaas, sla, tomaat en ketchup</p>
-                        </div>
-                        <span class="menu-item-prijs">&euro; 6,00</span>
-                    </div>
-                    <div class="menu-item">
-                        <div class="menu-item-icon burger">&#127828;</div>
-                        <div class="menu-item-info">
-                            <h4>Sperriefood Burger</h4>
-                            <p>Dubbel vlees, bacon, kaas en huissaus</p>
-                        </div>
-                        <span class="menu-item-prijs">&euro; 8,50</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- DRANKEN -->
-            <div class="menu-categorie">
-                <div class="categorie-titel">
-                    <h3>&#127867; Dranken</h3>
-                    <div class="lijn"></div>
-                </div>
-                <div class="menu-items-grid">
-                    <div class="menu-item">
-                        <div class="menu-item-icon drank">&#127867;</div>
-                        <div class="menu-item-info">
-                            <h4>Frisdrank (blik)</h4>
-                            <p>Cola, Fanta, Sprite of Appelsap</p>
-                        </div>
-                        <span class="menu-item-prijs">&euro; 1,50</span>
-                    </div>
-                    <div class="menu-item">
-                        <div class="menu-item-icon drank">&#127867;</div>
-                        <div class="menu-item-info">
-                            <h4>Water (0.5L)</h4>
-                            <p>Plat of bruisend</p>
-                        </div>
-                        <span class="menu-item-prijs">&euro; 1,25</span>
-                    </div>
-                    <div class="menu-item">
-                        <div class="menu-item-icon drank">&#127867;</div>
-                        <div class="menu-item-info">
-                            <h4>Milkshake</h4>
-                            <p>Chocolade, vanille of aardbei</p>
-                        </div>
-                        <span class="menu-item-prijs">&euro; 3,50</span>
-                    </div>
-                </div>
-            </div>
-
+                <?php endforeach; ?>
+            <?php endif; ?>
         </div>
     </section>
 
@@ -225,8 +118,8 @@
         <div class="footer-top">
             <div class="footer-grid">
                 <div class="footer-brand">
-                    <a href="index.php" class="logo">Sperrie<span>food</span></a>
-                    <p>Sperriefood staat voor vers, zelfgemaakt eten in het hart van Nijmegen. Opgericht door Lano Ockers in 2026.</p>
+                    <a href="index.php" class="logo">Friet<span>lust</span></a>
+                    <p>Frietlust staat voor vers, zelfgemaakt eten in het hart van Nijmegen. Opgericht door Lano Ockers in 2026.</p>
                 </div>
                 <div class="footer-kolom">
                     <h4>Navigatie</h4>
@@ -251,14 +144,14 @@
                     <ul>
                         <li><a href="#">Hoekstraat 12, Nijmegen</a></li>
                         <li><a href="#">024-123 4567</a></li>
-                        <li><a href="#">info@sperriefood.nl</a></li>
+                        <li><a href="#">info@frietlust.nl</a></li>
                     </ul>
                 </div>
             </div>
         </div>
         <div class="footer-bottom">
             <div class="container">
-                <span>&copy; 2026 Sperriefood. Alle rechten voorbehouden.</span>
+                <span>&copy; 2026 Frietlust. Alle rechten voorbehouden.</span>
                 <span>Gemaakt met liefde in Nijmegen</span>
             </div>
         </div>

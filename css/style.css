@@ -1072,3 +1072,239 @@ img {
     .sectie { padding: 3rem 1rem; }
     .slide-inhoud h1 { font-size: 2rem; }
 }
+
+/* === ADMIN DASHBOARD === */
+.admin-dashboard h1 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: var(--donker);
+}
+
+.message {
+    background: #dcfce7;
+    color: #166534;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    border: 1px solid #bbf7d0;
+    font-weight: 600;
+    text-align: center;
+}
+
+.admin-section {
+    background: var(--wit);
+    padding: 2.5rem;
+    border-radius: var(--radius);
+    box-shadow: var(--schaduw);
+    border: 1px solid rgba(0,0,0,0.05);
+    transition: transform 0.2s ease;
+    margin-bottom: 2rem;
+}
+
+.admin-section:hover {
+    transform: translateY(-2px);
+}
+
+.admin-section h2 {
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 2rem;
+    color: var(--donker);
+}
+
+.admin-form {
+    background: var(--licht);
+    padding: 2rem;
+    border-radius: var(--radius);
+    margin-bottom: 1rem;
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+.form-groep {
+    margin-bottom: 1.5rem;
+}
+
+.form-groep label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--donker);
+    font-size: 0.9rem;
+}
+
+.form-groep input,
+.form-groep textarea,
+.form-groep select {
+    width: 100%;
+    padding: 0.9rem 1rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: all 0.2s ease;
+    background: var(--wit);
+}
+
+.form-groep input:focus,
+.form-groep textarea:focus,
+.form-groep select:focus {
+    outline: none;
+    border-color: var(--rood);
+    box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.1);
+    transform: translateY(-1px);
+}
+
+.form-groep textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.btn-admin {
+    background: var(--rood);
+    color: var(--wit);
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+}
+
+.btn-admin:hover {
+    background: #b91c1c;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(185, 28, 28, 0.3);
+}
+
+.btn-admin.secondary {
+    background: var(--geel);
+    color: var(--donker);
+}
+
+.btn-admin.secondary:hover {
+    background: #fbbf24;
+    box-shadow: 0 4px 12px rgba(251, 191, 36, 0.3);
+}
+
+.btn-admin.danger {
+    background: #dc2626;
+}
+
+.btn-admin.danger:hover {
+    background: #b91c1c;
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--wit);
+    border-radius: var(--radius);
+    overflow: hidden;
+}
+
+.admin-table thead {
+    background: linear-gradient(135deg, var(--donker), var(--donker2));
+    color: var(--wit);
+}
+
+.admin-table th,
+.admin-table td {
+    padding: 1.2rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.admin-table th {
+    font-weight: 700;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.admin-table tbody tr {
+    transition: background 0.2s ease;
+}
+
+.admin-table tbody tr:hover {
+    background: rgba(29, 78, 216, 0.05);
+}
+
+.admin-table tbody tr:nth-child(even) {
+    background: rgba(0,0,0,0.02);
+}
+
+.admin-table .actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+/* === AUTH STIJLEN === */
+.auth-container {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.auth-card {
+    background: var(--wit);
+    padding: 2.5rem;
+    border-radius: var(--radius);
+    box-shadow: var(--schaduw);
+    text-align: center;
+}
+
+.auth-card h1 {
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin-bottom: 2rem;
+    color: var(--donker);
+}
+
+.auth-card h1 i {
+    color: var(--rood);
+    margin-right: 0.5rem;
+}
+
+.auth-error,
+.auth-success {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.auth-error {
+    background: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+}
+
+.auth-success {
+    background: #dcfce7;
+    color: #166534;
+    border: 1px solid #bbf7d0;
+}
+
+.auth-form {
+    text-align: left;
+}
+
+.auth-note {
+    margin-top: 1.5rem;
+    font-size: 0.9rem;
+    color: var(--tekst-licht);
+}
+
+.auth-note a {
+    color: var(--rood);
+    font-weight: 600;
+}

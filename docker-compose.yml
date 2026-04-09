@@ -30,7 +30,7 @@ services:
     environment:
     # de HOSTNAME is gelijk aan de servicenaam: "db" 
       MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: mydatabase
+      MYSQL_DATABASE: webapp
       MYSQL_USER: user
       MYSQL_PASSWORD: password
     volumes:
