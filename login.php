@@ -1,29 +1,28 @@
 <?php
-require 'config.php';
+include 'php/db.php'; 
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $username = trim($_POST['username']);
-    $password = $_POST['password'];
+if ($_SERVER['REQUEST_METHOD'] == 'POST') { // als formulier is verstuurd haalt hij zegmaar de username en wachtwoord op
+    $username = trim($_POST['username']); 
+    $password = $_POST['password']; 
 
-    $stmt = $pdo->prepare("SELECT id, username, password, role FROM users WHERE username = ?");
-    $stmt->execute([$username]);
-    $user = $stmt->fetch();
+    $stmt = $databaseVerbinding->prepare("SELECT id, username, password, role FROM users WHERE username = ?"); // bereid query voor om gebruiker te vinden
+    $stmt->execute([$username]); // voer query uit met username
+    $user = $stmt->fetch(); // haal gebruiker op
 
-    if ($user && password_verify($password, $user['password'])) {
-        session_start();
-        $_SESSION['user_id'] = $user['id'];
-        $_SESSION['username'] = $user['username'];
-        $_SESSION['role'] = $user['role'];
+    if ($user && password_verify($password, $user['password'])) { // als gebruiker bestaat en wachtwoord klopt
+        session_start(); 
+        $_SESSION['user_id'] = $user['id']; // sla user id op
+        $_SESSION['username'] = $user['username']; // sla username op
+        $_SESSION['role'] = $user['role']; // sla rol op
 
-        // Alleen admins mogen door
-        if ($user['role'] == 'admin') {
-            header("Location: admin.php");
-        } else {
-            $error = "Alleen admins mogen inloggen.";
+        if ($user['role'] == 'admin') { 
+            header("Location: admin.php"); 
+        } else { // anders
+            $error = "Alleen admins mogen inloggen."; 
         }
-        exit;
-    } else {
-        $error = "Ongeldige gebruikersnaam of wachtwoord.";
+        exit; 
+    } else { 
+        $error = "Ongeldige gebruikersnaam of wachtwoord."; 
     }
 }
 ?>

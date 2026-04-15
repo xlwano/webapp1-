@@ -1,28 +1,22 @@
 <?php
-try {
-    require 'config.php';
+include 'php/db.php'; // databaseverbinding ophalen
 
-    $zoek = isset($_GET['zoek']) ? trim($_GET['zoek']) : '';
-    $query = "SELECT * FROM gerechten";
-    if ($zoek) {
-        $query .= " WHERE naam LIKE :zoek";
-    }
-    $query .= " ORDER BY FIELD(categorie, 'Friet', 'Snacks', 'Burgers', 'Dranken'), naam";
-    $stmt = $pdo->prepare($query);
-    if ($zoek) {
-        $stmt->bindValue(':zoek', '%' . $zoek . '%');
-    }
-    $stmt->execute();
-    $gerechten = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$zoekwoord = ''; // zoekwoord is eerst leeg
 
-    $categorieen = [];
-    foreach ($gerechten as $gerecht) {
-        $categorieen[$gerecht['categorie']][] = $gerecht;
-    }
-} catch (PDOException $e) {
-    $gerechten = [];
-    $categorieen = [];
-    $db_error = $e->getMessage();
+if (isset($_GET['zoeken']) && $_GET['zoeken'] !== '') { // als er iets gezocht wordt dan haalt hij wat je opzoekt op en verwijdert de spaties
+    $zoekwoord = trim($_GET['zoeken']); 
+    $gerechtenOphalen = $databaseVerbinding->prepare("SELECT * FROM gerechten WHERE naam LIKE ? OR beschrijving LIKE ? ORDER BY categorie"); // bereid query voor met zoeken
+    $zoekpatroon = '%' . $zoekwoord . '%'; // maak zoekpatroon met soort van placeholders 
+    $gerechtenOphalen->execute([$zoekpatroon, $zoekpatroon]); 
+} else { // als er niet gezocht wordt
+    $gerechtenOphalen = $databaseVerbinding->prepare("SELECT * FROM gerechten ORDER BY categorie"); // bereid query voor om alles op te halen
+    $gerechtenOphalen->execute(); 
+}
+
+$alleGevondenGerechten = $gerechtenOphalen->fetchAll(); 
+$gerechtenPerCategorie = []; 
+foreach ($alleGevondenGerechten as $gerecht) { 
+    $gerechtenPerCategorie[$gerecht['categorie']][] = $gerecht; 
 }
 ?>
 <!DOCTYPE html>
@@ -67,7 +61,7 @@ try {
     <!-- ZOEKBALK -->
     <div class="zoek-sectie">
         <form class="zoek-formulier" action="menu.php" method="GET">
-            <input type="text" name="zoek" placeholder="Zoek een gerecht...">
+            <input type="text" name="zoeken" placeholder="Zoek een gerecht..." value="<?php echo htmlspecialchars($zoekwoord); ?>">
             <button type="submit">Zoeken</button>
         </form>
     </div>
@@ -75,10 +69,7 @@ try {
     <!-- MENU -->
     <section class="sectie sectie-licht">
         <div class="container">
-            <?php if (isset($db_error)): ?>
-                <p>Database fout: <?php echo htmlspecialchars($db_error); ?></p>
-            <?php else: ?>
-                <?php foreach ($categorieen as $cat => $items): ?>
+            <?php foreach ($gerechtenPerCategorie as $cat => $items): ?>
                     <?php
                     $icon = '';
                     $class = '';
@@ -109,7 +100,6 @@ try {
                         </div>
                     </div>
                 <?php endforeach; ?>
-            <?php endif; ?>
         </div>
     </section>
 
@@ -161,3 +151,6 @@ try {
 
 </body>
 </html>
+
+
+

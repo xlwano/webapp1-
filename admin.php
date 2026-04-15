@@ -1,61 +1,60 @@
 <?php
-// Controleer of gebruiker ingelogd is EN admin is
-session_start();
-require 'config.php';
+session_start(); 
+include 'php/db.php'; 
 
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
-    header("Location: login.php");
-    exit;
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') { 
+    header("Location: login.php"); 
+    exit; 
 }
 
-$message = '';
-$gerechten = [];
+$message = ''; // bericht voor gebruiker
+$gerechten = []; // lijst met gerechten
+$gerecht_bewerken = null; // gerecht dat wordt bewerkt
 
-try {
-    // Als het formulier wordt ingestuurd (POST request)
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+// CREATE - Gerecht toevoegen
+if (isset($_POST['add_gerecht'])) { // als toevoegen-knop gedrukt
+    $naam = trim($_POST['naam']); // haal naam op
+    $beschrijving = trim($_POST['beschrijving']); // haal beschrijving op
+    $prijs = floatval($_POST['prijs']); // haal prijs op als getal
+    $categorie = trim($_POST['categorie']); // haal categorie op
 
-        // Gerecht toevoegen
-        if (isset($_POST['add_gerecht'])) {
-            $naam = trim($_POST['naam']);
-            $beschrijving = trim($_POST['beschrijving']);
-            $prijs = floatval($_POST['prijs']);
-            $categorie = trim($_POST['categorie']);
-
-            $stmt = $pdo->prepare("INSERT INTO gerechten (naam, beschrijving, prijs, categorie) VALUES (?, ?, ?, ?)");
-            $stmt->execute([$naam, $beschrijving, $prijs, $categorie]);
-            $message = "✓ Gerecht toegevoegd!";
-        }
-
-        // Gerecht bewerken
-        elseif (isset($_POST['edit_gerecht'])) {
-            $id = intval($_POST['id']);
-            $naam = trim($_POST['naam']);
-            $beschrijving = trim($_POST['beschrijving']);
-            $prijs = floatval($_POST['prijs']);
-            $categorie = trim($_POST['categorie']);
-
-            $stmt = $pdo->prepare("UPDATE gerechten SET naam = ?, beschrijving = ?, prijs = ?, categorie = ? WHERE id = ?");
-            $stmt->execute([$naam, $beschrijving, $prijs, $categorie, $id]);
-            $message = "✓ Gerecht bijgewerkt!";
-        }
-
-        // Gerecht verwijderen
-        elseif (isset($_POST['delete_gerecht'])) {
-            $id = intval($_POST['id']);
-            $stmt = $pdo->prepare("DELETE FROM gerechten WHERE id = ?");
-            $stmt->execute([$id]);
-            $message = "✓ Gerecht verwijderd!";
-        }
-    }
-
-    // Haal alle gerechten op uit de database
-    $stmt = $pdo->query("SELECT * FROM gerechten ORDER BY categorie, naam");
-    $gerechten = $stmt->fetchAll();
-
-} catch (PDOException $e) {
-    $message = "Database fout: " . $e->getMessage();
+    $stmt = $databaseVerbinding->prepare("INSERT INTO gerechten (naam, beschrijving, prijs, categorie) VALUES (?, ?, ?, ?)"); // bereid insert query voor
+    $stmt->execute([$naam, $beschrijving, $prijs, $categorie]); // voer insert uit
+    $message = "✓ Gerecht toegevoegd!"; // succes bericht
 }
+
+// UPDATE - Gerecht bewerken
+if (isset($_POST['edit_gerecht'])) { // als bewerken-knop gedrukt
+    $id = intval($_POST['id']); // haal id op als getal
+    $naam = trim($_POST['naam']); // haal naam op
+    $beschrijving = trim($_POST['beschrijving']); // haal beschrijving op
+    $prijs = floatval($_POST['prijs']); // haal prijs op als getal
+    $categorie = trim($_POST['categorie']); // haal categorie op
+
+    $stmt = $databaseVerbinding->prepare("UPDATE gerechten SET naam = ?, beschrijving = ?, prijs = ?, categorie = ? WHERE id = ?"); // bereid update query voor
+    $stmt->execute([$naam, $beschrijving, $prijs, $categorie, $id]); // voer update uit
+    $message = "✓ Gerecht bijgewerkt!"; // succes bericht
+}
+
+// DELETE - Gerecht verwijderen
+if (isset($_POST['delete_gerecht'])) { // als verwijderen-knop gedrukt
+    $id = intval($_POST['id']); // haal id op als getal
+    $stmt = $databaseVerbinding->prepare("DELETE FROM gerechten WHERE id = ?"); // bereid delete query voor
+    $stmt->execute([$id]); // voer delete uit
+    $message = "✓ Gerecht verwijderd!"; // succes bericht
+}
+
+// Controleer of je een gerecht wilt bewerken
+if (isset($_GET['edit'])) { // als edit parameter in url
+    $id = intval($_GET['edit']); // haal id op als getal
+    $stmt = $databaseVerbinding->prepare("SELECT * FROM gerechten WHERE id = ?"); // bereid select query voor
+    $stmt->execute([$id]); // voer select uit
+    $gerecht_bewerken = $stmt->fetch(); // haal gerecht op
+}
+
+// READ - Haal alle gerechten op
+$stmt = $databaseVerbinding->query("SELECT * FROM gerechten ORDER BY categorie, naam"); // haal alle gerechten op gesorteerd
+$gerechten = $stmt->fetchAll(); // haal resultaten op
 ?>
 <!DOCTYPE html>
 <html lang="nl">
@@ -89,34 +88,41 @@ try {
 
             <!-- Formulier om gerecht toe te voegen -->
             <div class="admin-section">
-                <h2>Nieuw Gerecht Toevoegen</h2>
+                <h2><?php echo $gerecht_bewerken ? 'Gerecht Bewerken' : 'Nieuw Gerecht Toevoegen'; ?></h2>
                 <form method="post" class="admin-form">
+                    <?php if ($gerecht_bewerken): ?>
+                        <input type="hidden" name="id" value="<?php echo $gerecht_bewerken['id']; ?>">
+                    <?php endif; ?>
+
                     <div class="form-groep">
                         <label for="naam">Naam:</label>
-                        <input type="text" name="naam" id="naam" required>
+                        <input type="text" name="naam" id="naam" value="<?php echo $gerecht_bewerken ? htmlspecialchars($gerecht_bewerken['naam']) : ''; ?>" required>
                     </div>
 
                     <div class="form-groep">
                         <label for="beschrijving">Beschrijving:</label>
-                        <textarea name="beschrijving" id="beschrijving" required></textarea>
+                        <textarea name="beschrijving" id="beschrijving" required><?php echo $gerecht_bewerken ? htmlspecialchars($gerecht_bewerken['beschrijving']) : ''; ?></textarea>
                     </div>
 
                     <div class="form-groep">
                         <label for="prijs">Prijs (€):</label>
-                        <input type="number" step="0.01" name="prijs" id="prijs" required>
+                        <input type="number" step="0.01" name="prijs" id="prijs" value="<?php echo $gerecht_bewerken ? $gerecht_bewerken['prijs'] : ''; ?>" required>
                     </div>
 
                     <div class="form-groep">
                         <label for="categorie">Categorie:</label>
                         <select name="categorie" id="categorie" required>
-                            <option value="Friet">Friet</option>
-                            <option value="Snacks">Snacks</option>
-                            <option value="Burgers">Burgers</option>
-                            <option value="Dranken">Dranken</option>
+                            <option value="Friet" <?php echo ($gerecht_bewerken && $gerecht_bewerken['categorie'] == 'Friet') ? 'selected' : ''; ?>>Friet</option>
+                            <option value="Snacks" <?php echo ($gerecht_bewerken && $gerecht_bewerken['categorie'] == 'Snacks') ? 'selected' : ''; ?>>Snacks</option>
+                            <option value="Burgers" <?php echo ($gerecht_bewerken && $gerecht_bewerken['categorie'] == 'Burgers') ? 'selected' : ''; ?>>Burgers</option>
+                            <option value="Dranken" <?php echo ($gerecht_bewerken && $gerecht_bewerken['categorie'] == 'Dranken') ? 'selected' : ''; ?>>Dranken</option>
                         </select>
                     </div>
 
-                    <button type="submit" name="add_gerecht" class="btn-admin">Toevoegen</button>
+                    <button type="submit" name="<?php echo $gerecht_bewerken ? 'edit_gerecht' : 'add_gerecht'; ?>" class="btn-admin"><?php echo $gerecht_bewerken ? 'Bijwerken' : 'Toevoegen'; ?></button>
+                    <?php if ($gerecht_bewerken): ?>
+                        <a href="admin.php" class="btn-admin secondary">Annuleren</a>
+                    <?php endif; ?>
                 </form>
             </div>
 
