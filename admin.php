@@ -11,29 +11,23 @@ $message = ''; // bericht voor gebruiker
 $gerechten = []; // lijst met gerechten
 $gerecht_bewerken = null; // gerecht dat wordt bewerkt
 
-// CREATE - Gerecht toevoegen
-if (isset($_POST['add_gerecht'])) { // als toevoegen-knop gedrukt
+// SAVE - Gerecht toevoegen of bewerken
+if (isset($_POST['save_gerecht'])) { // als save-knop gedrukt
+    $id = !empty($_POST['id']) ? intval($_POST['id']) : null; // haal id op (kan leeg zijn)
     $naam = trim($_POST['naam']); // haal naam op
     $beschrijving = trim($_POST['beschrijving']); // haal beschrijving op
     $prijs = floatval($_POST['prijs']); // haal prijs op als getal
     $categorie = trim($_POST['categorie']); // haal categorie op
 
-    $stmt = $databaseVerbinding->prepare("INSERT INTO gerechten (naam, beschrijving, prijs, categorie) VALUES (?, ?, ?, ?)"); // bereid insert query voor
-    $stmt->execute([$naam, $beschrijving, $prijs, $categorie]); // voer insert uit
-    $message = "✓ Gerecht toegevoegd!"; // succes bericht
-}
-
-// UPDATE - Gerecht bewerken
-if (isset($_POST['edit_gerecht'])) { // als bewerken-knop gedrukt
-    $id = intval($_POST['id']); // haal id op als getal
-    $naam = trim($_POST['naam']); // haal naam op
-    $beschrijving = trim($_POST['beschrijving']); // haal beschrijving op
-    $prijs = floatval($_POST['prijs']); // haal prijs op als getal
-    $categorie = trim($_POST['categorie']); // haal categorie op
-
-    $stmt = $databaseVerbinding->prepare("UPDATE gerechten SET naam = ?, beschrijving = ?, prijs = ?, categorie = ? WHERE id = ?"); // bereid update query voor
-    $stmt->execute([$naam, $beschrijving, $prijs, $categorie, $id]); // voer update uit
-    $message = "✓ Gerecht bijgewerkt!"; // succes bericht
+    if ($id) { // als id aanwezig = bewerken
+        $stmt = $databaseVerbinding->prepare("UPDATE gerechten SET naam = ?, beschrijving = ?, prijs = ?, categorie = ? WHERE id = ?");
+        $stmt->execute([$naam, $beschrijving, $prijs, $categorie, $id]);
+        $message = "✓ Gerecht bijgewerkt!";
+    } else { // anders = toevoegen
+        $stmt = $databaseVerbinding->prepare("INSERT INTO gerechten (naam, beschrijving, prijs, categorie) VALUES (?, ?, ?, ?)");
+        $stmt->execute([$naam, $beschrijving, $prijs, $categorie]);
+        $message = "✓ Gerecht toegevoegd!";
+    }
 }
 
 // DELETE - Gerecht verwijderen
@@ -119,7 +113,7 @@ $gerechten = $stmt->fetchAll(); // haal resultaten op
                         </select>
                     </div>
 
-                    <button type="submit" name="<?php echo $gerecht_bewerken ? 'edit_gerecht' : 'add_gerecht'; ?>" class="btn-admin"><?php echo $gerecht_bewerken ? 'Bijwerken' : 'Toevoegen'; ?></button>
+                    <button type="submit" name="save_gerecht" class="btn-admin"><?php echo $gerecht_bewerken ? 'Bijwerken' : 'Toevoegen'; ?></button>
                     <?php if ($gerecht_bewerken): ?>
                         <a href="admin.php" class="btn-admin secondary">Annuleren</a>
                     <?php endif; ?>

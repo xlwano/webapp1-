@@ -6,18 +6,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') { // als formulier is verstuurd haalt 
     $password = $_POST['password']; 
 
     $stmt = $databaseVerbinding->prepare("SELECT id, username, password, role FROM users WHERE username = ?"); // bereid query voor om gebruiker te vinden
-    $stmt->execute([$username]); // voer query uit met username
-    $user = $stmt->fetch(); // haal gebruiker op
+    $stmt->execute([$username]); // hier voert hij de query uit met de username en daarna haalt hij deze zegmaar op
+    $user = $stmt->fetch(); 
 
-    if ($user && password_verify($password, $user['password'])) { // als gebruiker bestaat en wachtwoord klopt
+    if ($user && password_verify($password, $user['password'])) { // controleert of de gebruiker bestaat en wachtwoord klopt
         session_start(); 
-        $_SESSION['user_id'] = $user['id']; // sla user id op
-        $_SESSION['username'] = $user['username']; // sla username op
-        $_SESSION['role'] = $user['role']; // sla rol op
+
+        // opslaan van variabelen 
+        $_SESSION['user_id'] = $user['id']; 
+        $_SESSION['username'] = $user['username']; 
+        $_SESSION['role'] = $user['role']; 
 
         if ($user['role'] == 'admin') { 
             header("Location: admin.php"); 
-        } else { // anders
+        } else {
             $error = "Alleen admins mogen inloggen."; 
         }
         exit; 

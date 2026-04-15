@@ -1,14 +1,14 @@
 <?php
-include 'php/db.php'; // databaseverbinding ophalen
+include 'php/db.php'; 
 
-$zoekwoord = ''; // zoekwoord is eerst leeg
+$zoekwoord = ''; 
 
 if (isset($_GET['zoeken']) && $_GET['zoeken'] !== '') { // als er iets gezocht wordt dan haalt hij wat je opzoekt op en verwijdert de spaties
     $zoekwoord = trim($_GET['zoeken']); 
     $gerechtenOphalen = $databaseVerbinding->prepare("SELECT * FROM gerechten WHERE naam LIKE ? OR beschrijving LIKE ? ORDER BY categorie"); // bereid query voor met zoeken
-    $zoekpatroon = '%' . $zoekwoord . '%'; // maak zoekpatroon met soort van placeholders 
+    $zoekpatroon = '%' . $zoekwoord . '%'; // maak zoekpatroon met wildcards
     $gerechtenOphalen->execute([$zoekpatroon, $zoekpatroon]); 
-} else { // als er niet gezocht wordt
+} else { 
     $gerechtenOphalen = $databaseVerbinding->prepare("SELECT * FROM gerechten ORDER BY categorie"); // bereid query voor om alles op te halen
     $gerechtenOphalen->execute(); 
 }
