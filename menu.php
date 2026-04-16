@@ -1,22 +1,22 @@
 <?php
-include 'php/db.php'; 
+include 'php/db.php'; //verbinding maken met database
 
-$zoekwoord = ''; 
+$zoekwoord = '';  //maak een lege variabelen aan die zoekwoord heet
 
-if (isset($_GET['zoeken']) && $_GET['zoeken'] !== '') { // als er iets gezocht wordt dan haalt hij wat je opzoekt op en verwijdert de spaties
-    $zoekwoord = trim($_GET['zoeken']); 
-    $gerechtenOphalen = $databaseVerbinding->prepare("SELECT * FROM gerechten WHERE naam LIKE ? OR beschrijving LIKE ? ORDER BY categorie"); // bereid query voor met zoeken
-    $zoekpatroon = '%' . $zoekwoord . '%'; // maak zoekpatroon met wildcards
-    $gerechtenOphalen->execute([$zoekpatroon, $zoekpatroon]); 
-} else { 
-    $gerechtenOphalen = $databaseVerbinding->prepare("SELECT * FROM gerechten ORDER BY categorie"); // bereid query voor om alles op te halen
-    $gerechtenOphalen->execute(); 
+if (isset($_GET['zoeken']) && $_GET['zoeken'] !== '') { // hier controleert hij of zoeken bestaat en of zoeken niet leeg is
+    $zoekwoord = trim($_GET['zoeken']);  // hier haalt hij zegmaar de spaties enzo om het zoeken weg en stopt hij deze waarde in zoekwoord
+    $gerechtenOphalen = $databaseVerbinding->prepare("SELECT * FROM gerechten WHERE naam LIKE ? OR beschrijving LIKE ? ORDER BY categorie"); // zet een sql statement klaar op de database en zet deze query in een variabel, de query haalt van alle gerechten de naam of de beschrijving en sorteert het met de categorie
+    $zoekpatroon = '%' . $zoekwoord . '%'; // hier maakt hij een zoekpattroon met een wildcard zodat het zoekwoord zegmaar overal gevonden kan worden niet alleen bij het begin
+    $gerechtenOphalen->execute([$zoekpatroon, $zoekpatroon]); // hier voert hij de query uit en zet er 2x het zoekpatroon in zodat hij kan zoeken in de naam en in de beschrijving
+} else { // als de if statement niet klopt gaat hij dit uitvoeren
+    $gerechtenOphalen = $databaseVerbinding->prepare("SELECT * FROM gerechten ORDER BY categorie"); // hier maakt hij verbinding met de database en zet hij een query klaar die alle gerechten ophaalt en ze sorteert met categorie
+    $gerechtenOphalen->execute(); //hier voert hij die query uit die je net hebt voorbereid
 }
 
-$alleGevondenGerechten = $gerechtenOphalen->fetchAll(); 
-$gerechtenPerCategorie = []; 
-foreach ($alleGevondenGerechten as $gerecht) { 
-    $gerechtenPerCategorie[$gerecht['categorie']][] = $gerecht; 
+$alleGevondenGerechten = $gerechtenOphalen->fetchAll(); // je stopt zegmaar alles van gerechtenOphalen in de allegevondengerechten variabel
+$gerechtenPerCategorie = []; // hier maakt hij gwn lege array aan
+foreach ($alleGevondenGerechten as $gerecht) { // hier gaat hij zegmaar langs elk gerecht in allegevondengerechten en die heten ff snel gerecht
+    $gerechtenPerCategorie[$gerecht['categorie']][] = $gerecht; // hier stopt hij alle gerechten zegmaar in een array gebaseert op de categorie 
 }
 ?>
 <!DOCTYPE html>

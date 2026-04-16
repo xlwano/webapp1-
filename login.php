@@ -1,30 +1,30 @@
 <?php
-include 'php/db.php'; 
+include 'php/db.php'; // connectie met de database
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') { // als formulier is verstuurd haalt hij zegmaar de username en wachtwoord op
-    $username = trim($_POST['username']); 
-    $password = $_POST['password']; 
+if ($_SERVER['REQUEST_METHOD'] == 'POST') { // als formulier is verstuurd haalt hij zegmaar de username en wachtwoord op en je gebruikt post omdat je zegmaar iets verstuurd en niet iets ophaalt
+    $username = trim($_POST['username']); // hier haal je zegmaar alle spaties weg van de ingevoerde username en zet je deze in de username variabel
+    $password = $_POST['password']; // hier gebeurt in principe hetzelfde als bij regel 6
 
     $stmt = $databaseVerbinding->prepare("SELECT id, username, password, role FROM users WHERE username = ?"); // bereid query voor om gebruiker te vinden
-    $stmt->execute([$username]); // hier voert hij de query uit met de username en daarna haalt hij deze zegmaar op
-    $user = $stmt->fetch(); 
+    $stmt->execute([$username]); // hier voert hij de query uit en geeft de username mee omdat je een placeholder had bij username 
+    $user = $stmt->fetch(); // hier haalt hij de username dan op en zet deze in user
 
     if ($user && password_verify($password, $user['password'])) { // controleert of de gebruiker bestaat en wachtwoord klopt
-        session_start(); 
+        session_start();  
 
         // opslaan van variabelen 
         $_SESSION['user_id'] = $user['id']; 
         $_SESSION['username'] = $user['username']; 
         $_SESSION['role'] = $user['role']; 
 
-        if ($user['role'] == 'admin') { 
-            header("Location: admin.php"); 
-        } else {
-            $error = "Alleen admins mogen inloggen."; 
+        if ($user['role'] == 'admin') { //als de user de role admin heeft 
+            header("Location: admin.php");  // ga naar admin.php
+        } else { 
+            $error = "Alleen admins mogen inloggen."; //maak een error variabel die je later kan uitprinten
         }
-        exit; 
+        exit; // stop met de code
     } else { 
-        $error = "Ongeldige gebruikersnaam of wachtwoord."; 
+        $error = "Ongeldige gebruikersnaam of wachtwoord.";
     }
 }
 ?>

@@ -1,0 +1,180 @@
+/* === ADMIN HEADER === */
+.admin-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    background: var(--donker);
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+    height: var(--header-hoogte);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.admin-logo {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--wit);
+    letter-spacing: -0.5px;
+    text-decoration: none;
+}
+
+.admin-nav {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.admin-toevoegen-knop {
+    background: var(--rood);
+    color: var(--wit);
+    padding: 0.5rem 1.2rem;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.2s;
+}
+
+.admin-toevoegen-knop:hover {
+    background: #1e40af;
+    transform: translateY(-1px);
+}
+
+.admin-uitloggen-knop {
+    color: rgba(255, 255, 255, 0.8);
+    padding: 0.5rem 1.2rem;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.admin-uitloggen-knop:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--wit);
+    border-color: rgba(255, 255, 255, 0.6);
+}
+
+/* === ADMIN INHOUD === */
+.admin-sectie {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: calc(var(--header-hoogte) + 3rem) 2rem 3rem;
+}
+
+.admin-titel {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--donker);
+    margin-bottom: 2rem;
+}
+
+/* === GERECHTEN TABEL === */
+.gerechten-tabel {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--wit);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--schaduw);
+}
+
+.gerechten-tabel th,
+.gerechten-tabel td {
+    padding: 1.2rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.gerechten-tabel th {
+    background: linear-gradient(135deg, var(--donker), var(--donker2));
+    color: var(--wit);
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.gerechten-tabel tbody tr:hover {
+    background: rgba(29, 78, 216, 0.05);
+}
+
+.gerechten-tabel tbody tr:nth-child(even) {
+    background: rgba(0, 0, 0, 0.02);
+}
+
+.gerechten-tabel td a {
+    color: var(--rood);
+    font-weight: 600;
+    margin-right: 0.5rem;
+    transition: color 0.2s;
+}
+
+.gerechten-tabel td a:hover {
+    color: #1e40af;
+}
+
+.gerechten-tabel td button {
+    background: #dc2626;
+    color: var(--wit);
+    border: none;
+    padding: 0.4rem 0.9rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.gerechten-tabel td button:hover {
+    background: #b91c1c;
+    transform: translateY(-1px);
+}
+
+/* === ADMIN FORMULIER PAGINA === */
+.admin-form {
+    background: var(--wit);
+    padding: 2.5rem;
+    border-radius: var(--radius);
+    box-shadow: var(--schaduw);
+    max-width: 700px;
+}
+
+/* === FOOTER (eenvoudig) === */
+.footer p {
+    text-align: center;
+    padding: 1.5rem;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 600px) {
+    .admin-header {
+        padding: 0 1rem;
+    }
+
+    .admin-nav {
+        gap: 0.5rem;
+    }
+
+    .admin-toevoegen-knop,
+    .admin-uitloggen-knop {
+        font-size: 0.8rem;
+        padding: 0.4rem 0.8rem;
+    }
+
+    .admin-sectie {
+        padding: calc(var(--header-hoogte) + 2rem) 1rem 2rem;
+    }
+
+    .gerechten-tabel th,
+    .gerechten-tabel td {
+        padding: 0.75rem 0.5rem;
+        font-size: 0.85rem;
+    }
+}
